@@ -12,4 +12,3 @@ dependencies:
   - pip:
       - docker # To interact with Docker from scripts if needed
       - typescript
-      - ts-node
