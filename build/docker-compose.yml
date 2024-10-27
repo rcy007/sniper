@@ -17,8 +17,8 @@ services:
       - ../data:/app/data # Shared data directory between Streamlit and Superset
     depends_on:
       - sqlite
-    env_file:
-      - ../.env
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
     command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
 
   superset:
@@ -32,8 +32,6 @@ services:
       - ../data:/app/data # Shared data directory between Streamlit and Superset
     depends_on:
       - sqlite
-    env_file:
-      - ../.env
     environment:
       - SUPERSET_ENV=development
     command: >
@@ -43,5 +41,5 @@ services:
       superset run -h 0.0.0.0 -p 8088
       "
 
-volumes:
-  # sqlite_data volume is no longer needed
+# volumes:
+# sqlite_data volume is no longer needed
