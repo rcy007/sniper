@@ -27,6 +27,15 @@ AUTOENV_ASSUME_YES=1\
 /' /opt/homebrew/opt/autoenv/activate.sh
 ```
 
+Use vim and modify /opt/homebrew/opt/autoenv/activate.sh
+to replace <env> with <autoenv>
+
+```sh
+AUTOENV_AUTH_FILE="${AUTOENV_AUTH_FILE:-$HOME/.autoenv_authorized}"
+AUTOENV_ENV_FILENAME="${AUTOENV_ENV_FILENAME:-.autoenv}"
+AUTOENV_ENV_LEAVE_FILENAME="${AUTOENV_ENV_LEAVE_FILENAME:-.autoenv.leave}"
+```
+
 This above code coupled with our .env and .env.leave files will make sure we always activate our dev conda environment
 whenever we are in our project directory, and exit to our base environment whenever we leave it.
 
