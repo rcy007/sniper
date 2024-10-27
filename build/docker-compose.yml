@@ -5,36 +5,50 @@ services:
   #     - ../data:/data # Use a bind mount instead of a named volume
   #   entrypoint: ["sleep", "infinity"]
 
-  streamlit:
+  # streamlit:
+  #   build:
+  #     context: ..
+  #     dockerfile: build/dockerfiles/Dockerfile.streamlit
+  #   ports:
+  #     - "8501:8501"
+  #   volumes:
+  #     - ../:/app
+  #     - ../data:/app/data # Shared data directory between Streamlit and Superset
+  #   # depends_on:
+  #   #   - sqlite
+  #   environment:
+  #     - STREAMLIT_SERVER_HEADLESS=true
+  #   command: streamlit run /app/data/app.py --server.port=8501 --server.address=0.0.0.0
+
+  superset:
     build:
       context: ..
-      dockerfile: build/dockerfiles/Dockerfile.streamlit
+      dockerfile: build/dockerfiles/Dockerfile.superset
     ports:
-      - "8501:8501"
+      - "8088:8088"
     volumes:
       - ../:/app
-      - ../data:/app/data # Shared data directory between Streamlit and Superset
-    depends_on:
-      - sqlite
+      - ../data:/app/data
     environment:
-      - STREAMLIT_SERVER_HEADLESS=true
-    command: streamlit run /app/data/app.py --server.port=8501 --server.address=0.0.0.0
+      - SUPERSET_CONFIG_PATH=/app/data/superset_config_docker.py
+    command: >
+      /bin/sh -c "
+      pip list
+      "
 
   # superset:
   #   image: apache/superset:latest
-  #   # platform: linux/amd64
-  #   env_file:
-  #     - path: docker/.env
+  #   platform: linux/amd64
   #   ports:
   #     - "8088:8088"
   #   volumes:
   #     - ../:/app
   #     - ../data:/app/data
-  #   environment:
-  #     - SUPERSET_ENV=development
-  #     - SUPERSET_SECRET_KEY="8QJOiF/FH5ZQ5O1zL0VEIpu4nxu4QV9DtOVUz9PJVl/acGwxzebXvXxw" # Optional: if referenced in superset_config.py
+  #   # environment:
+  #   #   - SUPERSET_CONFIG_PATH=/app/data/superset_config.py
   #   command: >
   #     /bin/sh -c "
+  #     cp /app/data/superset_config_docker.py /app/build/docker/pythonpath_dev/superset_config_docker.py &&
   #     superset db upgrade &&
   #     superset init &&
   #     superset run -h 0.0.0.0 -p 8088
