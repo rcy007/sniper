@@ -1,0 +1,15 @@
+name: sniper-dev-env
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - sqlite # Local database for testing scripts outside Docker
+  - pandas # If needed for data manipulation in CI/CD scripts
+  - numpy # Optional, for local data work if required
+  - requests # Optional, for API interaction in CI/CD
+  - nodejs # Enables npm within Conda for TypeScript
+  - pip
+  - pip:
+      - docker # To interact with Docker from scripts if needed
+      - typescript
+      - ts-node
