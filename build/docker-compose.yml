@@ -1,0 +1,47 @@
+version: "3"
+services:
+  sqlite:
+    image: nouchka/sqlite3
+    volumes:
+      - ../data:/data # Use a bind mount instead of a named volume
+    entrypoint: ["sleep", "infinity"]
+
+  streamlit:
+    build:
+      context: ..
+      dockerfile: build/dockerfiles/Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ../:/app
+      - ../data:/app/data # Shared data directory between Streamlit and Superset
+    depends_on:
+      - sqlite
+    env_file:
+      - ../.env
+    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+
+  superset:
+    build:
+      context: ..
+      dockerfile: build/dockerfiles/Dockerfile.superset
+    ports:
+      - "8088:8088"
+    volumes:
+      - ../:/app
+      - ../data:/app/data # Shared data directory between Streamlit and Superset
+    depends_on:
+      - sqlite
+    env_file:
+      - ../.env
+    environment:
+      - SUPERSET_ENV=development
+    command: >
+      /bin/sh -c "
+      superset db upgrade &&
+      superset init &&
+      superset run -h 0.0.0.0 -p 8088
+      "
+
+volumes:
+  # sqlite_data volume is no longer needed
