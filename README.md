@@ -6,6 +6,7 @@ Net Worth and Investing
 Pre-requisites:
 
 -[conda (Miniconda)](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html)
+-[docker](https://docs.docker.com/compose/install/#scenario-one-install-docker-desktop)
 -[autoenv](https://github.com/hyperupcall/autoenv)
 
 ```sh
