@@ -21,16 +21,13 @@ services:
     command: streamlit run /app/data/app.py --server.port=8501 --server.address=0.0.0.0
 
   superset:
-    build:
-      context: ..
-      dockerfile: build/dockerfiles/Dockerfile.superset
+    image: apache/superset:latest # Use the official Superset image directly
+    platform: linux/amd64 # Optional: for ARM-based systems
     ports:
       - "8088:8088"
     volumes:
       - ../:/app
-      - ../data:/app/data # Shared data directory between Streamlit and Superset
-    depends_on:
-      - sqlite
+      - ../data:/app/data
     environment:
       - SUPERSET_ENV=development
     command: >
