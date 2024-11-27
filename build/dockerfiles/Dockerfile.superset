@@ -1,5 +1,31 @@
-# Dockerfile.superset
-FROM apache/superset
+FROM python:3.9
+
+WORKDIR /app
+
+# Copy and install dependencies
+RUN pip install pillow
+RUN pip install apache-superset
+ENV SUPERSET_SECRET_KEY=NwL+o8uFeYi7pMSM4osSip3NCoDhFXQB/TdvMgzR74JJxdUq2xH+42Ot
+ENV FLASK_APP=superset
+# Install SQLite
+RUN superset db upgrade
+# Create an admin user in your metadata database (use `admin` as username to be able to load the examples)
+RUN superset fab create-admin \
+    --username admin \
+    --firstname Admin \
+    --lastname User \
+    --email admin@superset.com \
+    --password admin
+
+# Load some data to play with
+RUN superset load_examples
+
+# Create default roles and permissions
+RUN superset init
 
 # Expose the port for Superset
 EXPOSE 8088
+
+# # Run Streamlit application
+# CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["superset", "run", "-p", "8088", "-h", "0.0.0.0", "--with-threads", "--reload", "--debugger"]
