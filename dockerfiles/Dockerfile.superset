@@ -26,6 +26,5 @@ RUN superset init
 # Expose the port for Superset
 EXPOSE 8088
 
-# # Run Streamlit application
-# CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
-CMD ["superset", "run", "-p", "8088", "-h", "0.0.0.0", "--with-threads", "--reload", "--debugger"]
+# # Run Superset server
+# CMD ["superset", "run", "-p", "8088", "-h", "0.0.0.0", "--with-threads", "--reload", "--debugger"]

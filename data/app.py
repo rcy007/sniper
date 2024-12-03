@@ -3,38 +3,114 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+
+import streamlit.components.v1 as components
+
+# Embed the widget - HTML Way
+# symbol = st.selectbox("Choose a stock:", ["AAPL", "GOOGL", "MSFT"])
+
+
+
+tradingView1html = """
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "Apple",
+      "AAPL|1D"
+    ]
+  ],
+  "chartOnly": false,
+  "width": "100%",
+  "height": "500",
+  "locale": "en",
+  "colorTheme": "dark",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": false,
+  "hideSymbolLogo": false,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "price-and-percent",
+  "chartType": "area",
+  "maLineColor": "#2962FF",
+  "maLineWidth": 1,
+  "maLength": 9,
+  "headerFontSize": "medium",
+  "lineWidth": 2,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|1",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
 """
-# Welcome to Streamlit!
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+components.html(tradingView1html, height=900)
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+# st.write('Baba')
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
+# df = pd.DataFrame({
+#   'first column': [1, 2, 3, 4],
+#   'second column': [10, 20, 30, 40]
+# })
 
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
+# df
 
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
+# # chart_data = pd.DataFrame(
+# #      np.random.randn(20, 3),
+# #      columns=['a', 'b', 'c'])
 
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
+# # st.line_chart(chart_data)
+# # map_data = pd.DataFrame(
+# #     np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+# #     columns=['lat', 'lon'])
+
+# # st.map(map_data)
+# # if st.checkbox('Show dataframe'):
+# #     chart_data = pd.DataFrame(
+# #        np.random.randn(20, 3),
+# #        columns=['a', 'b', 'c'])
+
+# #     chart_data
+
+# # Add a selectbox to the sidebar:
+# add_selectbox = st.sidebar.selectbox(
+#     'How would you like to be contacted?',
+#     ('Email', 'Home phone', 'Mobile phone')
+# )
+
+# # Add a slider to the sidebar:
+# add_slider = st.sidebar.slider(
+#     'Select a range of values',
+#     0.0, 100.0, (25.0, 75.0)
+# )
+
+# left_column, right_column = st.columns(2)
+# # You can use a column just like st.sidebar:
+# left_column.button('Press me!')
+
+# # Or even better, call Streamlit functions inside a "with" block:
+# with right_column:
+#     chosen = st.radio(
+#         'Sorting hat',
+#         ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
+#     st.write(f"You are in {chosen} house!")
